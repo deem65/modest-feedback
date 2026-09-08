@@ -8,7 +8,9 @@ public class EmailService
 {
     private readonly string address;
     private readonly string appPassword;
-
+    const string host = "smtp.gmail.com";
+    const int port = 587;
+    const SecureSocketOptions options = SecureSocketOptions.StartTls;
     public EmailService(IConfiguration configuration)
     {
         address = 
@@ -36,11 +38,7 @@ public class EmailService
 
         using var client = new SmtpClient();
 
-        await client.ConnectAsync(
-            "smtp.gmail.com",
-            587,
-            SecureSocketOptions.StartTls);
-
+        await client.ConnectAsync(host, port, options);
         await client.AuthenticateAsync(address, appPassword);
         await client.SendAsync(message);
         await client.DisconnectAsync(true);
