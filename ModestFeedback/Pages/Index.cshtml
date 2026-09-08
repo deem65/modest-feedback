@@ -1,0 +1,37 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Modest Feedback";
+}
+
+<h1>Modest Feedback</h1>
+<p>Tell us about your experience at the event.</p>
+    <form method="post">
+        <div class="mb-3">
+            <label asp-for="Name">Name (optional)</label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Rating"></label>
+            <select asp-for="Rating" class="form-select">
+                <option value="">Choose a rating</option>
+                <option value="1">1 — Poor</option>
+                <option value="2">2 — Fair</option>
+                <option value="3">3 — Okay</option>
+                <option value="4">4 — Good</option>
+                <option value="5">5 — Excellent</option>
+            </select>
+            <span asp-validation-for="Rating" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Comment"></label>
+            <textarea asp-for="Comment"
+                      class="form-control" rows="4"></textarea>
+            <span asp-validation-for="Comment" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit feedback</button>
+    </form>
