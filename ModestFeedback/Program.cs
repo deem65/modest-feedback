@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ModestFeedback.Data;
+using ModestFeedback.Services;
 
 string srcString = "DataSource";
 string src = "feedback.db";
@@ -10,6 +11,7 @@ builder.Services.AddRazorPages();
 
 builder.Services.AddDbContext<Context>(options => options.UseSqlite($"{srcString}={src}"));
 
+builder.Services.AddScoped<EmailService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

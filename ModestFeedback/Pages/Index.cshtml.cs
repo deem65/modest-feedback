@@ -3,13 +3,17 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ModestFeedback.Data;
 using ModestFeedback.Models;
+using ModestFeedback.Services;
 using System.ComponentModel.DataAnnotations;
 public class IndexModel : PageModel
 {
     private readonly Context ctx;
-    public IndexModel(Context ctx)
+    private readonly EmailService emailService;
+
+    public IndexModel(Context ctx, EmailService emailService)
     {
         this.ctx = ctx;
+        this.emailService = emailService;
     }
     [BindProperty]
     [StringLength(100)]
@@ -41,6 +45,15 @@ public class IndexModel : PageModel
 
         ctx.Submissions.Add(submission);
         await ctx.SaveChangesAsync();
+
+        await emailService.SendAsync
+            (
+            "davidsoloca06@gmail.com",
+            $"New feedback #{submission.Id}",
+            $"Name: {submission.Name ?? "Anonymous"}\n" +
+            $"Rating: {submission.Rating}/5\n" +
+            $"Comment: {submission.Comment}"
+            );
 
         return RedirectToPage("/Thanks");
     }
