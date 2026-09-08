@@ -46,14 +46,25 @@ public class IndexModel : PageModel
         ctx.Submissions.Add(submission);
         await ctx.SaveChangesAsync();
 
-        await emailService.SendAsync
-            (
-            "davidsoloca06@gmail.com",
-            $"New feedback #{submission.Id}",
-            $"Name: {submission.Name ?? "Anonymous"}\n" +
-            $"Rating: {submission.Rating}/5\n" +
-            $"Comment: {submission.Comment}"
-            );
+        try
+        {
+            await emailService.SendAsync(
+                "davidsoloca06@gmail.com",
+                $"New feedback #{submission.Id}",
+                $"Name: {submission.Name ?? "Anonymous"}\n" +
+                $"Rating: {submission.Rating}/5\n" +
+                $"Comment: {submission.Comment}");
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine(
+                $"Email failed for submission #{submission.Id}: {ex.Message}");
+
+            return RedirectToPage("/Thanks");
+        }
+
+        submission.IsEmailSent = true;
+        await ctx.SaveChangesAsync();
 
         return RedirectToPage("/Thanks");
     }

@@ -11,4 +11,5 @@ public class Submission
     public string Comment { get; set; } = string.Empty;
 
     public DateTime SubmittedAtUtc { get; set; } = DateTime.UtcNow;
+    public bool IsEmailSent { get; set; }
 }
